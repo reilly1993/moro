@@ -79,8 +79,8 @@ const Private = () => {
   const location = useLocation();
   const { signOut } = useAuthentication();
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Disclosure as="nav" className="bg-white shadow-sm">
+    <div className="min-h-screen bg-moro-blue">
+      <Disclosure as="nav" className="bg-moro-dark-blue shadow-sm">
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -89,12 +89,12 @@ const Private = () => {
                   <div className="flex-shrink-0 flex items-center">
                     <img
                       className="block lg:hidden h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+                      src="https://mama.sh/logo.svg"
                       alt="Workflow"
                     />
                     <img
                       className="hidden lg:block h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
+                      src="https://mama.sh/logo.svg"
                       alt="Workflow"
                     />
                   </div>
@@ -105,8 +105,8 @@ const Private = () => {
                         to={item.href}
                         className={classNames(
                           item.href === location.pathname
-                            ? "border-indigo-500 text-gray-900"
-                            : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
+                            ? "border-white text-white"
+                            : "border-transparent text-moro-blue hover:text-white hover:border-moro-purple",
                           "uppercase inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                         )}
                         aria-current={

@@ -77,7 +77,7 @@ export default function ActivityBar({ activity, open, setOpen }) {
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="h-full bg-white p-8 overflow-y-auto">
+                <div className="h-full bg-moro-purple p-8 overflow-y-auto">
                   <div className="pb-16 space-y-6">
                     <div>
                       <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
@@ -110,10 +110,10 @@ export default function ActivityBar({ activity, open, setOpen }) {
                       <ActivityForm />
                     </div>
 
-                    <div className="flex absolute bottom-0 inset-x-0 p-4 bg-white border-t">
+                    <div className="flex absolute bottom-0 inset-x-0 p-4 bg-moro-purple border-t">
                       <button
                         type="button"
-                        className="flex-1 bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="flex-1 bg-moro-dark-blue py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-moro-dark-purple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
                         Save
                       </button>
