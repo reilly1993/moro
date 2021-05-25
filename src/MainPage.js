@@ -1,27 +1,26 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
 import ActivityBar from "./ActivityBar";
-import { getActivities } from "./api";
+import { useActivities } from "./serverData/activities";
+import AddNewActivityBar from "./AddNewActivityBar";
 
 export const Body = () => {
-  const { isLoading, error, data: activities } = useQuery(
-    "activities",
-    getActivities
-  );
+  const { isLoading, data: activities } = useActivities();
 
   if (isLoading) return "Loading...";
-
+  console.log(
+    activities.find((a) => a.id === "60577b0dd1947bed5fbec93e").isPublic
+  );
   return (
     <div className="px-4 py-8 sm:px-0">
-      <Grid activities={activities.filter((item) => !item.private)} />
+      <Grid activities={activities} />
     </div>
   );
 };
 
-const Grid = ({ activities }) => {
+const Grid = ({ activities = [] }) => {
   return (
     <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-      {activities.map((activity) => (
+      {activities.slice(0, 10).map((activity) => (
         <ActivityItem key={activity.key} activity={activity} />
       ))}
     </ul>
@@ -34,12 +33,25 @@ const ActivityItem = ({ activity }) => {
     image: [image],
     title,
     location,
+    isPublic,
   } = activity;
   const [open, setOpen] = useState(false);
   return (
     <>
       <ActivityBar activity={activity} open={open} setOpen={setOpen} />
       <li key={id} className="relative">
+        {isPublic && (
+          <span className="z-10 absolute top-1 right-1 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+            <svg
+              className="-ml-1 mr-1.5 h-2 w-2 text-indigo-400"
+              fill="currentColor"
+              viewBox="0 0 8 8"
+            >
+              <circle cx={4} cy={4} r={3} />
+            </svg>
+            Public
+          </span>
+        )}
         <div className="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
           <img
             src={image}
@@ -66,9 +78,24 @@ const ActivityItem = ({ activity }) => {
 };
 
 export const Header = () => {
+  const [adding, setAdding] = useState(false);
+  const handleAdd = () => {
+    setAdding(true);
+  };
   return (
-    <h1 className="text-3xl font-bold leading-tight text-gray-900">
-      Dashboard
-    </h1>
+    <div className="flex items-center justify-between">
+      <AddNewActivityBar open={adding} setOpen={setAdding} />
+      <h1 className="text-3xl font-bold leading-tight text-gray-900">
+        Dashboard
+      </h1>
+
+      <button
+        type="button"
+        className="inline-flex items-center px-5 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        onClick={handleAdd}
+      >
+        Add event
+      </button>
+    </div>
   );
 };
