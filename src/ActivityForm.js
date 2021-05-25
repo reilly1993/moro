@@ -1,12 +1,17 @@
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useAuthentication } from "./AuthenticationProvider";
-import { useUpdateActivity } from "./serverData/activities";
+import ReactDatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { useCategories } from "./serverData/categories";
+import { useMoods } from "./serverData/moods";
+import { useVenues } from "./serverData/venues";
 
 export default function ActivityForm({ currentActivity, setCurrentActivity }) {
-  const { title, location, text, image, time } = currentActivity;
+  const { title, text, time } = currentActivity;
 
-  const updateActitity = useUpdateActivity();
+  const { data: venues } = useVenues();
+  const { data: categories } = useCategories();
+  const { data: moods } = useMoods();
 
   return (
     <form className="space-y-8 divide-y divide-gray-200">
@@ -32,19 +37,21 @@ export default function ActivityForm({ currentActivity, setCurrentActivity }) {
               </label>
               <div className="mt-1 sm:mt-0 sm:col-span-2">
                 <div className="max-w-lg flex rounded-md shadow-sm">
-                  <input
-                    type="text"
+                  <ReactDatePicker
                     name="time"
                     id="time"
                     autoComplete="time"
                     className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
-                    value={dayjs(time * 1000).format("DD/MM/YYYY HH:mm")}
-                    onChange={(e) => {
+                    selected={dayjs(time * 1000).toDate()}
+                    onChange={(date) =>
                       setCurrentActivity((prev) => ({
                         ...prev,
-                        time: parseInt(e.target.value),
-                      }));
-                    }}
+                        time: parseInt(date.getTime() / 1000),
+                      }))
+                    }
+                    showTimeSelect
+                    timeFormat="H:mm"
+                    dateFormat="MMMM d, yyyy H:mm"
                   />
                 </div>
               </div>
@@ -69,33 +76,6 @@ export default function ActivityForm({ currentActivity, setCurrentActivity }) {
                       setCurrentActivity((prev) => ({
                         ...prev,
                         title: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-              <label
-                htmlFor="location"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-              >
-                Location
-              </label>
-              <div className="mt-1 sm:mt-0 sm:col-span-2">
-                <div className="max-w-lg flex rounded-md shadow-sm">
-                  <input
-                    type="text"
-                    name="location"
-                    id="location"
-                    autoComplete="location"
-                    className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
-                    value={location}
-                    onChange={(e) =>
-                      setCurrentActivity((prev) => ({
-                        ...prev,
-                        location: e.target.value,
                       }))
                     }
                   />
@@ -254,43 +234,25 @@ export default function ActivityForm({ currentActivity, setCurrentActivity }) {
                   id="venue"
                   name="venue"
                   autoComplete="venue"
+                  value={currentActivity.venue}
+                  onChange={(e) =>
+                    setCurrentActivity((prev) => ({
+                      ...prev,
+                      venue: e.target.value,
+                    }))
+                  }
                   className="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                 >
-                  <option>Huset</option>
-                  <option>Loppen</option>
-                  <option>Vega</option>
-                  <option>Absalon</option>
+                  <option value={null}>Choose venue...</option>
+                  {venues.map((venue) => (
+                    <option key={venue.id} value={venue.id}>
+                      {venue.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
 
-            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:pt-5">
-              <label
-                htmlFor="photo"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Billede
-              </label>
-              <div className="mt-1 sm:mt-0 sm:col-span-2">
-                <div className="flex items-center">
-                  <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                    <svg
-                      className="h-full w-full text-gray-300"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                  </span>
-                  <button
-                    type="button"
-                    className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Change
-                  </button>
-                </div>
-              </div>
-            </div>
             <div className="space-y-6 sm:space-y-5">
               <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                 <label
@@ -306,18 +268,12 @@ export default function ActivityForm({ currentActivity, setCurrentActivity }) {
                     autoComplete="category"
                     className="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                   >
-                    <option>Koncert</option>
-                    <option>Udstilling & Kunst</option>
-                    <option>Teater & Forestillinger</option>
-                    <option>Film</option>
-                    <option>Litteratur</option>
-                    <option>Comedy</option>
-                    <option>Sport og film</option>
-                    <option>Fest</option>
-                    <option>Talk & Workshop</option>
-                    <option>Gratis</option>
-                    <option>Loppemarked/ Lagersalg</option>
-                    <option>Mad & Drikke</option>
+                    <option value={null}>Choose category...</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.title}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -335,12 +291,12 @@ export default function ActivityForm({ currentActivity, setCurrentActivity }) {
                     autoComplete="mood"
                     className="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                   >
-                    <option>Hyg med ven</option>
-                    <option>Udvid horizon</option>
-                    <option>Hangover</option>
-                    <option>go on</option>
-                    <option>tom lom</option>
-                    <option>udideblaa</option>
+                    <option value={null}>Choose mood...</option>
+                    {moods.map((mood) => (
+                      <option key={mood.id} value={mood.id}>
+                        {mood.title}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ActivityBar from "./ActivityBar";
 import { useActivities } from "./serverData/activities";
 import AddNewActivityBar from "./AddNewActivityBar";
+import { useVenues } from "./serverData/venues";
 
 export const Body = () => {
   const { isLoading, data: activities } = useActivities();
@@ -26,8 +27,15 @@ const Grid = ({ activities = [] }) => {
 };
 
 const ActivityItem = ({ activity }) => {
-  const { id, image, title, location, isPublic } = activity;
+  const { id, image, title, isPublic, venue } = activity;
   const [open, setOpen] = useState(false);
+
+  const { data: venues } = useVenues();
+
+  const venueObj = useMemo(
+    () => venues.find((v) => v.id === venue),
+    [venues, venue]
+  );
   return (
     <>
       <ActivityBar activity={activity} open={open} setOpen={setOpen} />
@@ -62,7 +70,7 @@ const ActivityItem = ({ activity }) => {
           {title}
         </p>
         <p className="block text-sm font-medium text-gray-500 pointer-events-none">
-          {location?.name}
+          {venueObj?.name}
         </p>
       </li>
     </>
