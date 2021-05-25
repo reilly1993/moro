@@ -10,18 +10,13 @@ const empty = {
   title: "",
   location: "",
   isPublic: false,
-  image: [""],
+  image: "",
 };
 
 export default function AddNewActivityBar({ open, setOpen }) {
   const [currentActivity, setCurrentActivity] = useState(empty);
 
-  const {
-    title,
-    location,
-    isPublic,
-    image: [image],
-  } = currentActivity;
+  const { title, location, isPublic, image } = currentActivity;
 
   const updateActitity = useUpdateActivity();
 
@@ -120,7 +115,7 @@ export default function AddNewActivityBar({ open, setOpen }) {
                               {title}
                             </h2>
                             <p className="text-sm font-medium text-gray-500">
-                              {location.name}
+                              {location?.name}
                             </p>
                           </div>
                           <LabelToggle

@@ -15,13 +15,11 @@ export const useActivities = () => {
 
 export const useUpdateActivity = () => {
   const { token } = useAuthentication();
-  return useMutation((obj) => api.postActivities(obj, token), {
-    onSuccess: (_, variables) => {
+  return useMutation((obj) => api.putActivities(obj, token), {
+    onSuccess: (data, variables) => {
+      console.log({ data });
       queryClient.setQueryData("activities", (prev) => {
-        console.log(prev);
-        return prev.map((item) =>
-          item.id === variables.id ? variables : item
-        );
+        return prev.map((item) => (item.id === variables.id ? data : item));
       });
       //queryClient.invalidateQueries("activities");
     },

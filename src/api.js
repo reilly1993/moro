@@ -1,20 +1,21 @@
 export const fetchActivities = (token) =>
-  fetch("https://api.moro.mama.sh/listEvents", {
-    method: "POST",
+  fetch("http://mama.lan:8080/event", {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   }).then((res) => res.json());
 
-export const postActivities = (obj, token) => {
-  fetch("https://api.moro.mama.sh/modifyEvent", {
-    method: "POST",
+export const putActivities = (obj, token) => {
+  const { id, ...rest } = obj;
+  return fetch(`http://mama.lan:8080/event/${id}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(obj),
+    body: JSON.stringify(rest),
     redirect: "follow",
-  });
+  }).then((res) => res.json());
 };

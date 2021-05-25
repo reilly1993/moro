@@ -4,13 +4,7 @@ import { useAuthentication } from "./AuthenticationProvider";
 import { useUpdateActivity } from "./serverData/activities";
 
 export default function ActivityForm({ currentActivity, setCurrentActivity }) {
-  const {
-    title,
-    location,
-    text,
-    image: [image],
-    time,
-  } = currentActivity;
+  const { title, location, text, image, time } = currentActivity;
 
   const updateActitity = useUpdateActivity();
 

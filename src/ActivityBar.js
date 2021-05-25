@@ -12,12 +12,7 @@ export default function ActivityBar({ activity, open, setOpen }) {
     if (!open) return;
     setCurrentActivity(activity);
   }, [activity, open]);
-  const {
-    title,
-    location,
-    isPublic,
-    image: [image],
-  } = currentActivity;
+  const { title, location, isPublic, image } = currentActivity;
 
   const updateActitity = useUpdateActivity();
 
@@ -116,7 +111,7 @@ export default function ActivityBar({ activity, open, setOpen }) {
                               {title}
                             </h2>
                             <p className="text-sm font-medium text-gray-500">
-                              {location.name}
+                              {location?.name}
                             </p>
                           </div>
                           <LabelToggle

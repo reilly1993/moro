@@ -5,11 +5,9 @@ import AddNewActivityBar from "./AddNewActivityBar";
 
 export const Body = () => {
   const { isLoading, data: activities } = useActivities();
-
+  console.log({ activities, isLoading });
   if (isLoading) return "Loading...";
-  console.log(
-    activities.find((a) => a.id === "60577b0dd1947bed5fbec93e").isPublic
-  );
+
   return (
     <div className="px-4 py-8 sm:px-0">
       <Grid activities={activities} />
@@ -21,20 +19,14 @@ const Grid = ({ activities = [] }) => {
   return (
     <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
       {activities.slice(0, 10).map((activity) => (
-        <ActivityItem key={activity.key} activity={activity} />
+        <ActivityItem key={activity.id} activity={activity} />
       ))}
     </ul>
   );
 };
 
 const ActivityItem = ({ activity }) => {
-  const {
-    id,
-    image: [image],
-    title,
-    location,
-    isPublic,
-  } = activity;
+  const { id, image, title, location, isPublic } = activity;
   const [open, setOpen] = useState(false);
   return (
     <>
