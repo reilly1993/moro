@@ -17,6 +17,7 @@ import {
 } from "./AuthenticationProvider";
 import SignIn from "./SignIn";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 export const queryClient = new QueryClient();
 
@@ -56,11 +57,14 @@ function classNames(...classes) {
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthenticationProvider>
-        <Page />
-      </AuthenticationProvider>
-    </QueryClientProvider>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationProvider>
+          <Page />
+        </AuthenticationProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
   );
 }
 
