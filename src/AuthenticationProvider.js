@@ -19,7 +19,7 @@ export const AuthenticationProvider = ({ children }) => {
   const signIn = useCallback(async (username, password) => {
     setState("signing-in");
     try {
-      const json = await fetch("https://api.moro.mama.sh/login", {
+      const json = await fetch("https://api.moro.mama.sh/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
