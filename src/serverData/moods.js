@@ -3,7 +3,7 @@ import { useAuthentication } from "../AuthenticationProvider";
 const empty = [];
 
 const fetchMoods = (token) =>
-  fetch("http://mama.lan:8080/mood", {
+  fetch("https://api.moro.mama.sh/mood", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

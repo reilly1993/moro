@@ -4,7 +4,7 @@ import { useAuthentication } from "../AuthenticationProvider";
 const empty = [];
 
 const fetchActivities = (token) =>
-  fetch("http://mama.lan:8080/event", {
+  fetch("https://api.moro.mama.sh/event", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +14,7 @@ const fetchActivities = (token) =>
 
 const putActivities = (obj, token) => {
   const { id, ...rest } = obj;
-  return fetch(`http://mama.lan:8080/event/${id}`, {
+  return fetch(`https://api.moro.mama.sh/event/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
