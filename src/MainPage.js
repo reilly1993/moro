@@ -27,14 +27,14 @@ const Grid = ({ activities = [] }) => {
 };
 
 const ActivityItem = ({ activity }) => {
-  const { id, image, title, isPublic, venue } = activity;
+  const { id, imageUrl, title, isPublic, venueId } = activity;
   const [open, setOpen] = useState(false);
 
   const { data: venues } = useVenues();
 
   const venueObj = useMemo(
-    () => venues.find((v) => v.id === venue),
-    [venues, venue]
+    () => venues.find((v) => v.id === venueId),
+    [venues, venueId]
   );
   return (
     <>
@@ -54,7 +54,7 @@ const ActivityItem = ({ activity }) => {
         )}
         <div className="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
           <img
-            src={image}
+            src={imageUrl}
             alt=""
             className="object-cover pointer-events-none group-hover:opacity-75"
           />

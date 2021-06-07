@@ -12,7 +12,7 @@ export default function ActivityBar({ activity, open, setOpen }) {
     if (!open) return;
     setCurrentActivity(activity);
   }, [activity, open]);
-  const { title, location, isPublic, image } = currentActivity;
+  const { title, location, isPublic, imageUrl } = currentActivity;
 
   const updateActitity = useUpdateActivity();
 
@@ -102,7 +102,7 @@ export default function ActivityBar({ activity, open, setOpen }) {
                     <div className="pb-16 space-y-6">
                       <div>
                         <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
-                          <img src={image} alt="" className="object-cover" />
+                          <img src={imageUrl} alt="" className="object-cover" />
                         </div>
                         <div className="mt-4 flex items-start justify-between">
                           <div>

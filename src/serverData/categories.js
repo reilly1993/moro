@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { useAuthentication } from "../AuthenticationProvider";
 
 const fetchCategories = (token) =>
-  fetch("http://mama.lan:8080/category", {
+  fetch("https://api.moro.mama.sh/category", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
