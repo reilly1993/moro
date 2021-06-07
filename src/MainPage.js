@@ -5,29 +5,66 @@ import AddNewActivityBar from "./AddNewActivityBar";
 import { useVenues } from "./serverData/venues";
 
 export const Body = () => {
-  const { isLoading, data: activities } = useActivities();
-  console.log({ activities, isLoading });
+  const { isLoading } = useActivities();
+
   if (isLoading) return "Loading...";
 
   return (
     <div className="px-4 py-8 sm:px-0">
-      <Grid activities={activities} />
+      <Table />
     </div>
   );
 };
 
-const Grid = ({ activities = [] }) => {
+function Table() {
+  const { data: activities } = useActivities();
   return (
-    <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-      {activities.slice(0, 10).map((activity) => (
-        <ActivityItem key={activity.id} activity={activity} />
-      ))}
-    </ul>
+    <div className="flex flex-col">
+      <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table className="w-full divide-y divide-gray-200 overflow-hidden">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Title
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Venue
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Public status
+                  </th>
+
+                  <th scope="col" className="relative px-6 py-3">
+                    <span className="sr-only">Edit</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200 w-full">
+                {activities.map((item) => (
+                  <ActivityItem key={item.id} activity={item} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
 const ActivityItem = ({ activity }) => {
-  const { id, imageUrl, title, isPublic, venueId } = activity;
+  const { title, isPublic, venueId } = activity;
   const [open, setOpen] = useState(false);
 
   const { data: venues } = useVenues();
@@ -39,40 +76,23 @@ const ActivityItem = ({ activity }) => {
   return (
     <>
       <ActivityBar activity={activity} open={open} setOpen={setOpen} />
-      <li key={id} className="relative">
-        {isPublic && (
-          <span className="z-10 absolute top-1 right-1 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
-            <svg
-              className="-ml-1 mr-1.5 h-2 w-2 text-indigo-400"
-              fill="currentColor"
-              viewBox="0 0 8 8"
-            >
-              <circle cx={4} cy={4} r={3} />
-            </svg>
-            Public
-          </span>
-        )}
-        <div className="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-          <img
-            src={imageUrl}
-            alt=""
-            className="object-cover pointer-events-none group-hover:opacity-75"
-          />
-          <button
-            type="button"
-            className="absolute inset-0 focus:outline-none"
-            onClick={() => setOpen((prev) => !prev)}
-          >
-            <span className="sr-only">View details for {title}</span>
-          </button>
-        </div>
-        <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">
-          {title}
-        </p>
-        <p className="block text-sm font-medium text-gray-500 pointer-events-none">
+      <tr>
+        <td className="px-6 py-4 text-sm font-medium text-gray-900">{title}</td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
           {venueObj?.name}
-        </p>
-      </li>
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          {isPublic ? "Public" : "Private"}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+          <button
+            onClick={() => setOpen((prev) => !prev)}
+            className="text-indigo-600 hover:text-indigo-900"
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
     </>
   );
 };

@@ -16,6 +16,15 @@ export const AuthenticationProvider = ({ children }) => {
   const [state, setState] = useState("initial");
   const [token, setToken] = useState(null);
 
+  useEffect(() => {
+    const t = window.localStorage.getItem("token");
+    console.log({ t });
+    if (t) {
+      setToken(t);
+      setState("authenticated");
+    }
+  }, []);
+
   const signIn = useCallback(async (username, password) => {
     setState("signing-in");
     try {
@@ -26,6 +35,7 @@ export const AuthenticationProvider = ({ children }) => {
         redirect: "follow",
       }).then((res) => res.json());
       setToken(json.token);
+      window.localStorage.setItem("token", json.token);
       setState("authenticated");
     } catch (err) {
       setState("error");
@@ -33,6 +43,7 @@ export const AuthenticationProvider = ({ children }) => {
   }, []);
 
   const signOut = useCallback(() => {
+    window.localStorage.removeItem("token");
     setState("not-authenticated");
   }, []);
 
@@ -41,17 +52,10 @@ export const AuthenticationProvider = ({ children }) => {
     setUser(jwt.decode(token)?.user);
   }, [token]);
 
-  useEffect(() => {
-    setState("not-authenticated");
-  }, []);
-
-  const context = useMemo(() => ({ user, token, state, signIn, signOut }), [
-    user,
-    token,
-    state,
-    signIn,
-    signOut,
-  ]);
+  const context = useMemo(
+    () => ({ user, token, state, signIn, signOut }),
+    [user, token, state, signIn, signOut]
+  );
   return (
     <AuthenticationContext.Provider value={context}>
       {children}

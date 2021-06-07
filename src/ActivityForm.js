@@ -157,19 +157,6 @@ export default function ActivityForm({ currentActivity, setCurrentActivity }) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
-          <div>
-            <h3 className="text-lg leading-6 font-medium text-gray-900">
-              Personal Information
-            </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">
-              Use a permanent address where you can receive mail.
-            </p>
-          </div>
-          <div className="space-y-6 sm:space-y-5">
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
               <label
                 htmlFor="price"
