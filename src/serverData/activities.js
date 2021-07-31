@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../App";
 import { useAuthentication } from "../AuthenticationProvider";
+import { SERVER_URL } from "../constants";
 const empty = [];
 
 const fetchActivities = (token) =>
-  fetch("https://api.moro.mama.sh/event", {
+  fetch(`${SERVER_URL}/event`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +15,7 @@ const fetchActivities = (token) =>
 
 const putActivities = (obj, token) => {
   const { id, ...rest } = obj;
-  return fetch(`https://api.moro.mama.sh/event/${id}`, {
+  return fetch(`${SERVER_URL}/event/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +28,7 @@ const putActivities = (obj, token) => {
 
 const postActivities = (obj, token) => {
   const { id, ...rest } = obj;
-  return fetch(`https://api.moro.mama.sh/event`, {
+  return fetch(`${SERVER_URL}/event`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

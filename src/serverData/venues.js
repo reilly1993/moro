@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../App";
 import { useAuthentication } from "../AuthenticationProvider";
+import { SERVER_URL } from "../constants";
 const empty = [];
 
 const fetchVenues = (token) =>
-  fetch("https://api.moro.mama.sh/venue", {
+  fetch(`${SERVER_URL}/venue`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export const useVenues = () => {
 
 const postVenue = (obj, token) => {
   const { id, ...rest } = obj;
-  return fetch(`https://api.moro.mama.sh/venue`, {
+  return fetch(`${SERVER_URL}/venue`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -8,6 +8,7 @@ import {
 } from "react";
 
 import jwt from "jsonwebtoken";
+import { SERVER_URL } from "./constants";
 
 const AuthenticationContext = createContext();
 
@@ -28,7 +29,7 @@ export const AuthenticationProvider = ({ children }) => {
   const signIn = useCallback(async (username, password) => {
     setState("signing-in");
     try {
-      const json = await fetch("https://api.moro.mama.sh/auth", {
+      const json = await fetch(`${SERVER_URL}/auth`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

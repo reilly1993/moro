@@ -1,9 +1,10 @@
 import { useQuery } from "react-query";
 import { useAuthentication } from "../AuthenticationProvider";
+import { SERVER_URL } from "../constants";
 const empty = [];
 
 const fetchMoods = (token) =>
-  fetch("https://api.moro.mama.sh/mood", {
+  fetch(`${SERVER_URL}/mood`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
