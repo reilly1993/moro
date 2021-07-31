@@ -9,6 +9,8 @@ import { useVenues } from "./serverData/venues";
 export default function ActivityForm({ currentActivity, setCurrentActivity }) {
   const { title, text, time } = currentActivity;
 
+  console.log({ currentActivity });
+
   const { data: venues } = useVenues();
   const { data: categories } = useCategories();
   const { data: moods } = useMoods();

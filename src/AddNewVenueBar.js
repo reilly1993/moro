@@ -1,48 +1,43 @@
 import { useCallback, useState } from "react";
-import ActivityForm from "./ActivityForm";
-import LabelToggle from "./LabelToggle";
 import { useCreateActivity } from "./serverData/activities";
 import UnsavedChangesModal from "./UnsavedChangesModal";
-import dayjs from "dayjs";
 import Sidebar from "./Sidebar";
+import { useCreateVenue } from "./serverData/venues";
 
 const empty = {
-  title: "",
+  name: "",
   location: "",
-  isPublic: false,
-  image: "",
-  time: dayjs().unix(),
 };
 
-export default function AddNewActivityBar({ open, setOpen }) {
-  const [currentActivity, setCurrentActivity] = useState(empty);
+export default function AddNewVenueBar({ open, setOpen }) {
+  const [currentVeneue, setCurrentVenue] = useState(empty);
 
-  const { title, location, isPublic, image } = currentActivity;
+  const { name, location } = currentVeneue;
 
-  const updateActitity = useCreateActivity();
+  const createVenue = useCreateVenue();
 
   const [state, setState] = useState("initial");
   const handleClose = useCallback(
     (forceClose = false) => {
-      if (!forceClose && !Object.compare(empty, currentActivity)) {
+      if (!forceClose && !Object.compare(empty, currentVeneue)) {
         setState("unsaved-changes");
         return;
       }
       setState("closed");
       setOpen(false);
     },
-    [setOpen, currentActivity]
+    [setOpen, currentVeneue]
   );
 
   const handleSave = useCallback(
     (closeOnSave = false) => {
-      updateActitity.mutate(currentActivity, {
+      createVenue.mutate(currentVeneue, {
         onSuccess: () => {
           if (closeOnSave) handleClose(true);
         },
       });
     },
-    [currentActivity, updateActitity, handleClose]
+    [currentVeneue, createVenue, handleClose]
   );
 
   return (
@@ -54,39 +49,8 @@ export default function AddNewActivityBar({ open, setOpen }) {
         onClose={() => handleClose(true)}
       />
       <Sidebar onClose={handleClose} open={open} setOpen={setOpen}>
-        <div>
-          <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
-            <img src={image} alt="" className="object-cover" />
-          </div>
-          <div className="mt-4 flex items-start justify-between">
-            <div>
-              <h2 className="text-lg font-medium text-gray-900">
-                <span className="sr-only">Details for </span>
-                {title}
-              </h2>
-              <p className="text-sm font-medium text-gray-500">
-                {location?.name}
-              </p>
-            </div>
-            <LabelToggle
-              label="Public"
-              enabled={isPublic}
-              onToggle={(bool) => {
-                setCurrentActivity((prev) => ({
-                  ...prev,
-                  isPublic: !prev.isPublic,
-                }));
-              }}
-            />
-          </div>
-        </div>
-        <div>
-          <ActivityForm
-            currentActivity={currentActivity}
-            setCurrentActivity={setCurrentActivity}
-          />
-        </div>
-
+        <div></div>
+        <div>{name}</div>
         <div className="flex absolute bottom-0 inset-x-0 p-4 bg-white border-t">
           <button
             type="button"

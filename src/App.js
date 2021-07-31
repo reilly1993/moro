@@ -11,6 +11,8 @@ import {
 } from "react-router-dom";
 
 import * as MainPage from "./MainPage";
+import * as VenuePage from "./VenuePage";
+
 import {
   AuthenticationProvider,
   useAuthentication,
@@ -41,6 +43,8 @@ const navigation = [
     name: "Samarbejder",
     href: "/associates",
     current: false,
+    component: VenuePage.Body,
+    headerComponent: VenuePage.Header,
   },
   { name: "Webscraper", href: "/webscraper", current: false },
   { name: "Tip os database", href: "/tipusdatabse", current: false },

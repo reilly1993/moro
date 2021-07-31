@@ -25,6 +25,19 @@ const putActivities = (obj, token) => {
   }).then((res) => res.json());
 };
 
+const postActivities = (obj, token) => {
+  const { id, ...rest } = obj;
+  return fetch(`https://api.moro.mama.sh/event`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(rest),
+    redirect: "follow",
+  }).then((res) => res.json());
+};
+
 export const useActivities = () => {
   const { token } = useAuthentication();
   const { data = empty, ...rest } = useQuery("activities", () =>
@@ -41,6 +54,18 @@ export const useUpdateActivity = () => {
       console.log({ data });
       queryClient.setQueryData("activities", (prev) => {
         return prev.map((item) => (item.id === variables.id ? data : item));
+      });
+      //queryClient.invalidateQueries("activities");
+    },
+  });
+};
+
+export const useCreateActivity = () => {
+  const { token } = useAuthentication();
+  return useMutation((obj) => postActivities(obj, token), {
+    onSuccess: (data) => {
+      queryClient.setQueryData("activities", (prev) => {
+        return [...prev, data];
       });
       //queryClient.invalidateQueries("activities");
     },
