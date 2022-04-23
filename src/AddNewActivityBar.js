@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import ActivityForm from "./ActivityForm";
@@ -6,12 +6,16 @@ import LabelToggle from "./LabelToggle";
 import { useUpdateActivity } from "./serverData/activities";
 import UnsavedChangesModal from "./UnsavedChangesModal";
 
-export default function ActivityBar({ activity, open, setOpen }) {
-  const [currentActivity, setCurrentActivity] = useState(activity);
-  useEffect(() => {
-    if (!open) return;
-    setCurrentActivity(activity);
-  }, [activity, open]);
+const empty = {
+  title: "",
+  location: "",
+  isPublic: false,
+  image: [""],
+};
+
+export default function AddNewActivityBar({ open, setOpen }) {
+  const [currentActivity, setCurrentActivity] = useState(empty);
+
   const {
     title,
     location,
@@ -24,14 +28,14 @@ export default function ActivityBar({ activity, open, setOpen }) {
   const [state, setState] = useState("initial");
   const handleClose = useCallback(
     (forceClose = false) => {
-      if (!forceClose && !Object.compare(activity, currentActivity)) {
+      if (!forceClose && !Object.compare(empty, currentActivity)) {
         setState("unsaved-changes");
         return;
       }
       setState("closed");
       setOpen(false);
     },
-    [setOpen, activity, currentActivity]
+    [setOpen, currentActivity]
   );
 
   const handleSave = useCallback(
@@ -142,7 +146,7 @@ export default function ActivityBar({ activity, open, setOpen }) {
                         <button
                           type="button"
                           className="flex-1 bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                          onClick={() => handleSave(true)}
+                          onClick={() => handleSave()}
                         >
                           Save
                         </button>

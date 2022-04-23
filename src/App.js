@@ -17,6 +17,7 @@ import {
 } from "./AuthenticationProvider";
 import SignIn from "./SignIn";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 export const queryClient = new QueryClient();
 
@@ -56,11 +57,14 @@ function classNames(...classes) {
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthenticationProvider>
-        <Page />
-      </AuthenticationProvider>
-    </QueryClientProvider>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationProvider>
+          <Page />
+        </AuthenticationProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
   );
 }
 
@@ -125,7 +129,7 @@ const Private = () => {
                   </button>
 
                   {/* Profile dropdown */}
-                  <Menu as="div" className="ml-3 relative z-50">
+                  <Menu as="div" className="ml-3 relative">
                     {({ open }) => (
                       <>
                         <div>
@@ -150,7 +154,7 @@ const Private = () => {
                         >
                           <Menu.Items
                             static
-                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
                           >
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
